@@ -1,16 +1,59 @@
-# React + Vite
+# 🎧 Vibeary Audio Scout
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**🌐 Live Demo:** https://vibeary.vercel.app/
 
-Currently, two official plugins are available:
+AI-powered audiobook recommendation engine that finds your next favorite listen based on books you love.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- 🔍 **Smart Search** - Enter a book title to get similar audiobook recommendations
+- 🎲 **Surprise Me** - Discover legendary audiobooks in different vibes  
+- 🎭 **Archetype Switching** - Choose between Epic, Gritty, Fast, Deep
+- 📚 **History Tracking** - View and revisit past recommendations
+- 🎯 **Match Scoring** - See compatibility percentage with your taste
+- 🔗 **Direct Links** - One-click access to Audible/Amazon
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🎮 How to Use
 
-## Expanding the ESLint configuration
+1. **Choose Your Vibe** - Select an archetype (Epic, Gritty, Fast, Deep)
+2. **Search or Surprise** - Enter a book title or hit "Surprise Me"
+3. **Get Recommendations** - AI analyzes your preferences and suggests perfect matches
+4. **Listen & Enjoy** - Click through to purchase on your favorite platform
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **Frontend:** React 19 + Vite
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+- **AI:** Google Gemini 2.5 Flash
+- **Deployment:** Vercel
+
+## 🚀 Try It Now
+
+**🌐 [Live Demo](https://vibeary.vercel.app/)**
+
+Test these scenarios:
+- Search for your favorite book
+- Try "Surprise Me" with different archetypes
+- Test history feature
+- Check mobile responsiveness
+
+## 📱 Mobile Ready
+
+Fully responsive design that works perfectly on:
+- 📱 iOS Safari/Chrome
+- 🤖 Android Chrome
+- 💻 Desktop browsers
+- 📟 Tablets
+
+## 🔧 Built With Passion
+
+Created to help audiobook lovers discover their next great listen. Powered by cutting-edge AI with a focus on narrator quality and user experience.
+
+---
+
+**⭐ If you love it, star the repo!**
+**🐛 Found issues? Report them in GitHub issues**
+**💡 Ideas? Open a discussion!**
+
+*Vibeary Systems • 2026*
