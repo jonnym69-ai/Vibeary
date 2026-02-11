@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #020617;
+  color: #f1f5f9;
+}
+
+.test-class {
+  background-color: #0f172a;
+  color: #eab308;
+}
