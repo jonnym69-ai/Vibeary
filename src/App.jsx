@@ -82,9 +82,7 @@ function App() {
         narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: surprise 
-          ? `Perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`
-          : `Based on your interest in "${queryParam}", this ${activeArchetype} audiobook offers a similar gripping experience.`
+        match_reason: `Perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`,
       };
       
       setRecommendation(mockRecommendation);
