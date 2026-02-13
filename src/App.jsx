@@ -41,7 +41,7 @@ function App() {
     ],
   };
 
-  const getAIRecommendation = async (surprise = false) => {
+  const getAIRecommendation = async (queryParam = '', surprise = false) => {
     setLoading(true);
     setError('');
     
