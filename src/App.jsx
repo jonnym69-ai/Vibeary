@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones } from 'lucide-react';
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -105,7 +105,10 @@ function App() {
       {/* Onboarding Overlay */}
       {showOnboarding && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+          <div className="relative bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            <button onClick={completeOnboarding} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+              <X size={24} />
+            </button>
             <div className="text-center mb-6">
               <div className="text-6xl mb-4">🎧</div>
               <h2 className="text-2xl font-bold text-white mb-3">Welcome to Vibeary!</h2>
