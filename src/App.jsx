@@ -52,7 +52,7 @@ function App() {
     const searchQuery = encodeURIComponent(`${item.title} ${item.author} audiobook`);
     
     // Try Audible first (higher commission for audiobooks)
-    const audibleUrl = `https://www.audible.com/search?keywords=${searchQuery}&ref=${affiliateTag}`;
+    const audibleUrl = `https://www.audible.com/search?keywords=${searchQuery}&tag=${affiliateTag}`;
     
     // Prioritize Audible for audiobooks
     return audibleUrl;
