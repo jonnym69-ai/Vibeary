@@ -32,7 +32,7 @@ function App() {
       { title: 'Project Hail Mary', author: 'Andy Weir', narrator: 'Ray Porter' },
     ],
     fast: [
-      { title: 'The Hitchhiker's Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
+      { title: 'The Hitchhiker\'s Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
       { title: 'Fight Club', author: 'Chuck Palahniuk', narrator: 'Jim Uhls' },
     ],
     deep: [
