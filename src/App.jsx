@@ -153,7 +153,6 @@ function App() {
                 <li>• Try different archetypes for varied recommendations</li>
                 <li>• Click history items to revisit past finds</li>
                 <li>• Higher match scores mean better compatibility</li>
-                <li>• Add your Amazon affiliate tag to earn money!</li>
               </ul>
             </div>
             
