@@ -25,19 +25,31 @@ function App() {
       { title: 'Dune', author: 'Frank Herbert', narrator: 'Scott Brick' },
       { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien', narrator: 'Rob Inglis' },
       { title: 'The Name of the Wind', author: 'Patrick Rothfuss', narrator: 'Nick Podehl' },
+      { title: 'The Wheel of Time', author: 'Robert Jordan', narrator: 'Kate Reading' },
+      { title: 'Mistborn', author: 'Brandon Sanderson', narrator: 'Michael Kramer' },
+      { title: 'The Stormlight Archive', author: 'Brandon Sanderson', narrator: 'Michael Kramer' },
     ],
     gritty: [
       { title: 'The Martian', author: 'Andy Weir', narrator: 'R.C. Bray' },
       { title: 'Ready Player One', author: 'Ernest Cline', narrator: 'Wil Wheaton' },
       { title: 'Project Hail Mary', author: 'Andy Weir', narrator: 'Ray Porter' },
+      { title: 'The Road', author: 'Cormac McCarthy', narrator: 'Tom Pelphrey' },
+      { title: 'Station Eleven', author: 'Emily St. John Mandel', narrator: 'Scott Shepherd' },
+      { title: 'The Stand', author: 'Stephen King', narrator: 'Garry Robbins' },
     ],
     fast: [
       { title: 'The Hitchhiker\'s Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
       { title: 'Fight Club', author: 'Chuck Palahniuk', narrator: 'Jim Uhls' },
+      { title: 'The Bourne Identity', author: 'Robert Ludlum', narrator: 'Scott Brick' },
+      { title: 'Gone Girl', author: 'Gillian Flynn', narrator: 'Julia Whelan' },
+      { title: 'The Girl on the Train', author: 'Paula Hawkins', narrator: 'Claire Corbett' },
     ],
     deep: [
       { title: 'Sapiens', author: 'Yuval Noah Harari', narrator: 'Derek Perkins' },
       { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman', narrator: 'Patrick Egan' },
+      { title: 'Educated', author: 'Tara Westover', narrator: 'Julia Whelan' },
+      { title: 'Becoming', author: 'Michelle Obama', narrator: 'Michelle Obama' },
+      { title: 'The Body Keeps the Score', author: 'Bessel van der Kolk', narrator: 'Sean Pratt' },
     ],
   };
 
