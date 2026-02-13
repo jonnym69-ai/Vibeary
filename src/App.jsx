@@ -20,6 +20,27 @@ function App() {
     { id: 'deep', label: 'Deep', icon: '🌊' },
   ];
 
+  const books = {
+    epic: [
+      { title: 'Dune', author: 'Frank Herbert', narrator: 'Scott Brick' },
+      { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien', narrator: 'Rob Inglis' },
+      { title: 'The Name of the Wind', author: 'Patrick Rothfuss', narrator: 'Nick Podehl' },
+    ],
+    gritty: [
+      { title: 'The Martian', author: 'Andy Weir', narrator: 'R.C. Bray' },
+      { title: 'Ready Player One', author: 'Ernest Cline', narrator: 'Wil Wheaton' },
+      { title: 'Project Hail Mary', author: 'Andy Weir', narrator: 'Ray Porter' },
+    ],
+    fast: [
+      { title: 'The Hitchhiker's Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
+      { title: 'Fight Club', author: 'Chuck Palahniuk', narrator: 'Jim Uhls' },
+    ],
+    deep: [
+      { title: 'Sapiens', author: 'Yuval Noah Harari', narrator: 'Derek Perkins' },
+      { title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman', narrator: 'Patrick Egan' },
+    ],
+  };
+
   const getAIRecommendation = async (surprise = false) => {
     setLoading(true);
     setError('');
@@ -28,14 +49,30 @@ function App() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      const allBooks = Object.values(books).flat();
+      const archetypeBooks = books[activeArchetype];
+      let selectedBooks;
+      if (surprise) {
+        selectedBooks = allBooks;
+      } else {
+        const filteredBooks = allBooks.filter(book => 
+          book.title.toLowerCase().includes(queryParam.toLowerCase()) || 
+          book.author.toLowerCase().includes(queryParam.toLowerCase())
+        );
+        selectedBooks = filteredBooks.length > 0 ? filteredBooks : archetypeBooks;
+      }
+      const randomBook = selectedBooks[Math.floor(Math.random() * selectedBooks.length)];
+      
       const mockRecommendation = {
         id: Date.now(),
-        title: surprise ? 'Dune' : 'The Martian',
-        author: surprise ? 'Frank Herbert' : 'Andy Weir',
-        narrator: surprise ? 'Scott Brick' : 'R.C. Bray',
+        title: randomBook.title,
+        author: randomBook.author,
+        narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: `Perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`
+        match_reason: surprise 
+          ? `Perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`
+          : `Based on your interest in "${queryParam}", this ${activeArchetype} audiobook offers a similar gripping experience.`
       };
       
       setRecommendation(mockRecommendation);
