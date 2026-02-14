@@ -454,7 +454,7 @@ function App() {
       <div className="fixed bottom-0 left-0 right-0 bg-slate-950/80 backdrop-blur-xl border-t border-slate-900 p-6 text-center z-50">
         <p className="text-[9px] text-slate-800 font-bold uppercase tracking-[0.5em]">VIBEARY SYSTEMS • 2026</p>
         <p className="text-[8px] text-slate-700 mt-1">Amazon Affiliate Site</p>
-        <p className="text-[8px] text-slate-700 mt-1"><a href="https://www.amazon.co.uk/s?k=audiobook+headphones&tag=vibeary06-21" target="_blank" rel="noopener noreferrer" className="text-slate-700 hover:text-amber-500">Get Audiobook Headphones on Amazon</a></p>
+        <button onClick={() => window.open('https://www.amazon.co.uk/s?k=audiobook+headphones&tag=vibeary06-21', '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-1 px-3 rounded text-xs mt-2">Get Audiobook Headphones on Amazon</button>
       </div>
     </div>
   );
