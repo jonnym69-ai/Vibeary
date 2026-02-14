@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X } from 'lucide-react';
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -318,6 +318,21 @@ function App() {
             <span>GET ON AUDIBLE / AMAZON</span>
             <ExternalLink size={16} />
           </a>
+
+          <div className="flex justify-center space-x-4 mt-4">
+            <button
+              onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs"
+            >
+              <Twitter size={16} /> <span>Share on Twitter</span>
+            </button>
+            <button
+              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
+              className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs"
+            >
+              <Facebook size={16} /> <span>Share on Facebook</span>
+            </button>
+          </div>
         </div>
       ) : (
         !loading && (
