@@ -82,7 +82,7 @@ function App() {
         narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: `Perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`,
+        match_reason: `${randomBook.title} by ${randomBook.author} narrated by ${randomBook.narrator} offers perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`,
       };
       
       setRecommendation(mockRecommendation);
