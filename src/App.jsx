@@ -20,7 +20,16 @@ function App() {
     { id: 'deep', label: 'Deep', icon: '🌊' },
   ];
 
-  const books = {
+  const endings = [
+    "incredible world-building and compelling characters.",
+    "epic storytelling and rich narratives.",
+    "thrilling adventures and deep themes.",
+    "captivating plots and memorable characters.",
+    "immersive experiences and profound insights.",
+    "gripping suspense and emotional depth.",
+    "innovative concepts and engaging prose.",
+    "powerful messages and timeless appeal.",
+  ];
     epic: [
       { title: 'Dune', author: 'Frank Herbert', narrator: 'Scott Brick' },
       { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien', narrator: 'Rob Inglis' },
@@ -82,7 +91,7 @@ function App() {
         narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: `${randomBook.title} by ${randomBook.author} narrated by ${randomBook.narrator} offers perfect ${activeArchetype} vibes with incredible world-building and compelling characters.`,
+        match_reason: `${randomBook.title} by ${randomBook.author} narrated by ${randomBook.narrator} offers perfect ${activeArchetype} vibes with ${endings[Math.floor(Math.random() * endings.length)]}`,
       };
       
       setRecommendation(mockRecommendation);
