@@ -43,6 +43,11 @@ function App() {
       { title: 'The Priory of the Orange Tree', author: 'Samantha Shannon', narrator: 'Liyah Summers' },
       { title: 'The Poppy War', author: 'R.F. Kuang', narrator: 'Emily Woo Zeller' },
       { title: 'Red Queen', author: 'Victoria Aveyard', narrator: 'Amanda Dolan' },
+      { title: 'The Dark Tower', author: 'Stephen King', narrator: 'Frank Muller' },
+      { title: 'The Night Circus', author: 'Erin Morgenstern', narrator: 'Jim Dale' },
+      { title: 'The Lies of Locke Lamora', author: 'Scott Lynch', narrator: 'Michael Page' },
+      { title: 'Assassin\'s Apprentice', author: 'Robin Hobb', narrator: 'Bryce Dale' },
+      { title: 'The Blade Itself', author: 'Joe Abercrombie', narrator: 'Steven Pacey' },
     ],
     gritty: [
       { title: 'The Martian', author: 'Andy Weir', narrator: 'R.C. Bray' },
@@ -55,6 +60,11 @@ function App() {
       { title: 'The Girl on the Train', author: 'Paula Hawkins', narrator: 'Claire Corbett' },
       { title: 'Dark Places', author: 'Gillian Flynn', narrator: 'Rebecca Lowman' },
       { title: 'Sharp Objects', author: 'Gillian Flynn', narrator: 'Ann Marie Lee' },
+      { title: 'Into the Wild', author: 'Jon Krakauer', narrator: 'Philip Franklin' },
+      { title: 'The Hunger Games', author: 'Suzanne Collins', narrator: 'Carolyn McCormick' },
+      { title: 'American Gods', author: 'Neil Gaiman', narrator: 'Dennis Boutsikaris' },
+      { title: 'The Killing Floor', author: 'Lee Child', narrator: 'Dick Hill' },
+      { title: 'The Silent Patient', author: 'Alex Michaelides', narrator: 'Jack Hawkins' },
     ],
     fast: [
       { title: 'The Hitchhiker\'s Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
@@ -67,6 +77,11 @@ function App() {
       { title: 'The Sirens of Titan', author: 'Kurt Vonnegut', narrator: 'Jay Snyder' },
       { title: 'American Psycho', author: 'Bret Easton Ellis', narrator: 'Pablo Schreiber' },
       { title: 'High Fidelity', author: 'Nick Hornby', narrator: 'Stephen Fry' },
+      { title: 'The Cuckoo\'s Calling', author: 'Robert Galbraith', narrator: 'Robert Glenister' },
+      { title: 'The No. 1 Ladies\' Detective Agency', author: 'Alexander McCall Smith', narrator: 'Lisette Lecat' },
+      { title: 'The Da Vinci Code', author: 'Dan Brown', narrator: 'Paul Michael' },
+      { title: 'The Bourne Supremacy', author: 'Robert Ludlum', narrator: 'Scott Brick' },
+      { title: 'The Girl with the Dragon Tattoo', author: 'Stieg Larsson', narrator: 'Simon Vance' },
     ],
     deep: [
       { title: 'Sapiens', author: 'Yuval Noah Harari', narrator: 'Derek Perkins' },
@@ -79,6 +94,11 @@ function App() {
       { title: 'Man\'s Search for Meaning', author: 'Viktor E. Frankl', narrator: 'Simon Vance' },
       { title: 'Quiet', author: 'Susan Cain', narrator: 'Kathe Mazur' },
       { title: 'The Power of Habit', author: 'Charles Duhigg', narrator: 'Mike Chamberlain' },
+      { title: 'The Gene', author: 'Siddhartha Mukherjee', narrator: 'Dennis Boutsikaris' },
+      { title: 'The Immortal Life of Henrietta Lacks', author: 'Rebecca Skloot', narrator: 'Cassandra Campbell' },
+      { title: 'How to Win Friends and Influence People', author: 'Dale Carnegie', narrator: 'Andrew MacMillan' },
+      { title: 'The Psychology of Money', author: 'Morgan Housel', narrator: 'Chris Hill' },
+      { title: 'The Alchemist', author: 'Paulo Coelho', narrator: 'Jeremy Irons' },
     ],
   };
 
