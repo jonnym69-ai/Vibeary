@@ -230,6 +230,10 @@ function App() {
           VIBE<span className="text-amber-500 italic">ARY</span>
         </h1>
         <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.4em] mt-1">Audio Scout v1.2.6</p>
+
+  <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out Vibeary: AI audiobook recommendations!&url=https://vibeary.vercel.app`, '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all">
+    <Twitter size={16} /> <span>Share Vibeary</span>
+  </button>
       </header>
 
       <div className="grid grid-cols-4 gap-2 mb-6">
