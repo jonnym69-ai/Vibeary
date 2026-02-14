@@ -146,12 +146,10 @@ function App() {
     }
   };
 
-  const getMarketLink = () => {
+  const getMarketLink = (item) => {
     const affiliateTag = 'vibeary06-21'; // Amazon affiliate tag
-    
-    // Use Amazon UK audiobooks section with new affiliate tag
-    const amazonUrl = `https://www.amazon.co.uk/b?node=59324880031&linkCode=ll2&tag=${affiliateTag}&linkId=cc0dbbf844929db02770735b1627607f&ref_=as_li_ss_tl`;
-    
+    const searchQuery = encodeURIComponent(`${item.title} ${item.author} audiobook`);
+    const amazonUrl = `https://www.amazon.co.uk/s?k=${searchQuery}&tag=${affiliateTag}`;
     return amazonUrl;
   };
 
@@ -331,7 +329,7 @@ function App() {
 
           <div className="flex space-x-2 mb-4">
             <a
-              href={getMarketLink()}
+              href={getMarketLink(recommendation)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 bg-white text-slate-950 py-4 rounded-xl text-sm font-black flex items-center justify-center space-x-2 hover:bg-amber-50 transition-all active:scale-95 shadow-lg shadow-white/5"
@@ -340,7 +338,7 @@ function App() {
               <ExternalLink size={16} />
             </a>
             <button
-              onClick={() => navigator.clipboard.writeText(getMarketLink())}
+              onClick={() => navigator.clipboard.writeText(getMarketLink(recommendation))}
               className="bg-slate-700 hover:bg-slate-600 text-white py-4 px-4 rounded-xl flex items-center justify-center transition-all active:scale-95 hover:scale-105"
               title="Copy link"
             >
@@ -350,13 +348,13 @@ function App() {
 
           <div className="flex justify-center space-x-4 mt-4">
             <button
-              onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink())}`, '_blank')}
+              onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Twitter size={16} /> <span>Share on Twitter</span>
             </button>
             <button
-              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink())}`, '_blank')}
+              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
               className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Facebook size={16} /> <span>Share on Facebook</span>
