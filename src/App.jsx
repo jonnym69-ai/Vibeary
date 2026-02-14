@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy } from 'lucide-react';
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
   const [error, setError] = useState('');
   const [recommendation, setRecommendation] = useState(null);
   const [history, setHistory] = useState([]);
+  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('vibeary-favorites') || '[]'));
   const [activeArchetype, setActiveArchetype] = useState('epic');
   const [showOnboarding, setShowOnboarding] = useState(() => {
     return !localStorage.getItem('vibeary-onboarding-complete');
@@ -159,6 +160,18 @@ function App() {
     setShowOnboarding(false);
   };
 
+  const toggleFavorite = (rec) => {
+    const isFav = favorites.some(f => f.id === rec.id);
+    let newFavorites;
+    if (isFav) {
+      newFavorites = favorites.filter(f => f.id !== rec.id);
+    } else {
+      newFavorites = [...favorites, rec];
+    }
+    setFavorites(newFavorites);
+    localStorage.setItem('vibeary-favorites', JSON.stringify(newFavorites));
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans p-6 max-w-md mx-auto pb-32 selection:bg-amber-500/30">
       {/* Onboarding Overlay */}
@@ -301,6 +314,9 @@ function App() {
             </div>
             <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1">
               <Mic2 size={12} /> {recommendation.vibe}
+              <button onClick={() => toggleFavorite(recommendation)} className="ml-2 text-slate-500 hover:text-red-500 transition-colors">
+                <Heart size={12} fill={favorites.some(f => f.id === recommendation.id) ? 'currentColor' : 'none'} />
+              </button>
             </div>
           </div>
 
@@ -354,6 +370,31 @@ function App() {
             <p className="text-[10px] font-black uppercase tracking-[0.3em]">Ready for input</p>
           </div>
         )
+      )}
+
+      {favorites.length > 0 && (
+        <section className="mt-12 pb-10">
+          <div className="flex justify-between items-center mb-4 px-2">
+            <h3 className="text-[10px] font-black uppercase text-slate-600 tracking-[0.2em]">Favorites</h3>
+            <button onClick={() => { setFavorites([]); localStorage.removeItem('vibeary-favorites'); }} className="text-slate-700 hover:text-rose-500 transition-colors">
+              <Trash2 size={14} />
+            </button>
+          </div>
+          <div className="space-y-3">
+            {favorites.map(item => (
+              <div
+                key={item.id}
+                onClick={() => setRecommendation(item)}
+                className="bg-slate-900/40 border border-slate-800/50 p-4 rounded-2xl flex justify-between items-center group cursor-pointer hover:bg-slate-900 transition-all"
+              >
+                <div className="truncate pr-4">
+                  <p className="text-sm font-bold text-slate-400 group-hover:text-amber-500 truncate">{item.title}</p>
+                </div>
+                <ChevronRight size={16} className="text-slate-800 group-hover:text-white" />
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {history.length > 1 && (
