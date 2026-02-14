@@ -153,6 +153,11 @@ function App() {
     return amazonUrl;
   };
 
+  const getRelatedBooks = (current) => {
+    const archetypeBooks = books[current.vibe];
+    return archetypeBooks.filter(b => b.title !== current.title).sort(() => 0.5 - Math.random()).slice(0, 3);
+  };
+
   const completeOnboarding = () => {
     localStorage.setItem('vibeary-onboarding-complete', 'true');
     setShowOnboarding(false);
@@ -370,6 +375,21 @@ function App() {
             >
               <Facebook size={16} /> <span>Share on Facebook</span>
             </button>
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-sm font-bold text-slate-400 mb-4">You Might Also Like:</h3>
+            <div className="space-y-3">
+              {getRelatedBooks(recommendation).map(book => (
+                <div key={book.title} className="bg-slate-900/40 border border-slate-800/50 p-3 rounded-xl flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-bold text-white">{book.title}</p>
+                    <p className="text-xs text-slate-400">by {book.author}</p>
+                  </div>
+                  <a href={getMarketLink(book)} target="_blank" rel="noopener noreferrer" className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-3 rounded text-xs">Get on Amazon</a>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       ) : (
