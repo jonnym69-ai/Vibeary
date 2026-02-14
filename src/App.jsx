@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook } from 'lucide-react';
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -309,15 +309,24 @@ function App() {
             </p>
           </div>
 
-          <a
-            href={getMarketLink(recommendation)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full bg-white text-slate-950 py-4 rounded-xl text-sm font-black flex items-center justify-center space-x-2 hover:bg-amber-50 transition-all active:scale-95 shadow-lg shadow-white/5"
-          >
-            <span>GET ON AUDIBLE / AMAZON</span>
-            <ExternalLink size={16} />
-          </a>
+          <div className="flex space-x-2 mb-4">
+            <a
+              href={getMarketLink(recommendation)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-white text-slate-950 py-4 rounded-xl text-sm font-black flex items-center justify-center space-x-2 hover:bg-amber-50 transition-all active:scale-95 shadow-lg shadow-white/5"
+            >
+              <span>GET ON AUDIBLE / AMAZON</span>
+              <ExternalLink size={16} />
+            </a>
+            <button
+              onClick={() => navigator.clipboard.writeText(getMarketLink(recommendation))}
+              className="bg-slate-700 hover:bg-slate-600 text-white py-4 px-4 rounded-xl flex items-center justify-center transition-all active:scale-95"
+              title="Copy link"
+            >
+              <Copy size={16} />
+            </button>
+          </div>
 
           <div className="flex justify-center space-x-4 mt-4">
             <button
