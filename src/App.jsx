@@ -321,7 +321,7 @@ function App() {
             </a>
             <button
               onClick={() => navigator.clipboard.writeText(getMarketLink(recommendation))}
-              className="bg-slate-700 hover:bg-slate-600 text-white py-4 px-4 rounded-xl flex items-center justify-center transition-all active:scale-95"
+              className="bg-slate-700 hover:bg-slate-600 text-white py-4 px-4 rounded-xl flex items-center justify-center transition-all active:scale-95 hover:scale-105"
               title="Copy link"
             >
               <Copy size={16} />
@@ -331,13 +331,13 @@ function App() {
           <div className="flex justify-center space-x-4 mt-4">
             <button
               onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs"
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Twitter size={16} /> <span>Share on Twitter</span>
             </button>
             <button
               onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
-              className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs"
+              className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Facebook size={16} /> <span>Share on Facebook</span>
             </button>
