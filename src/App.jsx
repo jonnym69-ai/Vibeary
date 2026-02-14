@@ -39,18 +39,18 @@ function App() {
       { title: 'Dune', author: 'Frank Herbert', narrator: 'Scott Brick' },
       { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien', narrator: 'Rob Inglis' },
       { title: 'The Name of the Wind', author: 'Patrick Rothfuss', narrator: 'Nick Podehl' },
-      { title: 'The Wheel of Time', author: 'Robert Jordan', narrator: 'Kate Reading' },
-      { title: 'Mistborn', author: 'Brandon Sanderson', narrator: 'Michael Kramer' },
-      { title: 'The Stormlight Archive', author: 'Brandon Sanderson', narrator: 'Michael Kramer' },
-      { title: 'A Court of Thorns and Roses', author: 'Sarah J. Maas', narrator: 'Jennifer Ikeda' },
+      { title: 'The Wheel of Time', author: 'Robert Jordan', narrator: 'Kate Reading', series: 'Wheel of Time' },
+      { title: 'Mistborn', author: 'Brandon Sanderson', narrator: 'Michael Kramer', series: 'Mistborn' },
+      { title: 'The Stormlight Archive', author: 'Brandon Sanderson', narrator: 'Michael Kramer', series: 'The Stormlight Archive' },
+      { title: 'A Court of Thorns and Roses', author: 'Sarah J. Maas', narrator: 'Jennifer Ikeda', series: 'A Court of Thorns and Roses' },
       { title: 'The Priory of the Orange Tree', author: 'Samantha Shannon', narrator: 'Liyah Summers' },
-      { title: 'The Poppy War', author: 'R.F. Kuang', narrator: 'Emily Woo Zeller' },
-      { title: 'Red Queen', author: 'Victoria Aveyard', narrator: 'Amanda Dolan' },
-      { title: 'The Dark Tower', author: 'Stephen King', narrator: 'Frank Muller' },
+      { title: 'The Poppy War', author: 'R.F. Kuang', narrator: 'Emily Woo Zeller', series: 'The Poppy War' },
+      { title: 'Red Queen', author: 'Victoria Aveyard', narrator: 'Amanda Dolan', series: 'Red Queen' },
+      { title: 'The Dark Tower', author: 'Stephen King', narrator: 'Frank Muller', series: 'The Dark Tower' },
       { title: 'The Night Circus', author: 'Erin Morgenstern', narrator: 'Jim Dale' },
-      { title: 'The Lies of Locke Lamora', author: 'Scott Lynch', narrator: 'Michael Page' },
-      { title: 'Assassin\'s Apprentice', author: 'Robin Hobb', narrator: 'Bryce Dale' },
-      { title: 'The Blade Itself', author: 'Joe Abercrombie', narrator: 'Steven Pacey' },
+      { title: 'The Lies of Locke Lamora', author: 'Scott Lynch', narrator: 'Michael Page', series: 'Gentleman Bastard' },
+      { title: 'Assassin\'s Apprentice', author: 'Robin Hobb', narrator: 'Bryce Dale', series: 'Farseer Trilogy' },
+      { title: 'The Blade Itself', author: 'Joe Abercrombie', narrator: 'Steven Pacey', series: 'First Law' },
     ],
     gritty: [
       { title: 'The Martian', author: 'Andy Weir', narrator: 'R.C. Bray' },
@@ -326,6 +326,17 @@ function App() {
               "{recommendation.match_reason}"
             </p>
           </div>
+
+          {recommendation.series && (
+            <div className="mb-4">
+              <button
+                onClick={() => window.open(getMarketLink({ title: `${recommendation.series} series`, author: recommendation.author, narrator: '' }), '_blank')}
+                className="bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded-xl text-sm font-bold transition-all active:scale-95"
+              >
+                View Full Series on Amazon
+              </button>
+            </div>
+          )}
 
           <div className="flex space-x-2 mb-4">
             <a
