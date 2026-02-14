@@ -30,6 +30,8 @@ function App() {
     "innovative concepts and engaging prose.",
     "powerful messages and timeless appeal.",
   ];
+
+  const books = {
     epic: [
       { title: 'Dune', author: 'Frank Herbert', narrator: 'Scott Brick' },
       { title: 'The Lord of the Rings', author: 'J.R.R. Tolkien', narrator: 'Rob Inglis' },
