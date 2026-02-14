@@ -383,6 +383,7 @@ function App() {
 
       <div className="fixed bottom-0 left-0 right-0 bg-slate-950/80 backdrop-blur-xl border-t border-slate-900 p-6 text-center z-50">
         <p className="text-[9px] text-slate-800 font-bold uppercase tracking-[0.5em]">VIBEARY SYSTEMS • 2026</p>
+        <p className="text-[8px] text-slate-700 mt-1">Amazon Affiliate Site</p>
       </div>
     </div>
   );
