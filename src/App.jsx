@@ -22,14 +22,16 @@ function App() {
   ];
 
   const endings = [
-    "incredible world-building and compelling characters.",
-    "epic storytelling and rich narratives.",
-    "thrilling adventures and deep themes.",
-    "captivating plots and memorable characters.",
-    "immersive experiences and profound insights.",
-    "gripping suspense and emotional depth.",
-    "innovative concepts and engaging prose.",
-    "powerful messages and timeless appeal.",
+    "delivers exceptional narration that brings every character to life.",
+    "features outstanding voice acting that enhances the story's emotional depth.",
+    "offers a captivating listening experience with perfect pacing and tone.",
+    "showcases masterful storytelling through expert narration.",
+    "provides an immersive journey with rich vocal performances.",
+    "combines brilliant writing with exceptional audiobook production.",
+    "creates an unforgettable experience through skilled narration.",
+    "delivers powerful performances that elevate the source material.",
+    "offers perfect balance of action, emotion, and atmosphere.",
+    "features world-class narration that draws you completely in.",
   ];
 
   const books = {
@@ -132,7 +134,7 @@ function App() {
         narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: `${randomBook.title} by ${randomBook.author} narrated by ${randomBook.narrator} offers perfect ${activeArchetype} vibes with ${endings[Math.floor(Math.random() * endings.length)]}`,
+        match_reason: `${randomBook.title} by ${randomBook.author} is a perfect ${activeArchetype} match. Narrated by ${randomBook.narrator}, this audiobook ${endings[Math.floor(Math.random() * endings.length)]}`,
       };
       
       setRecommendation(mockRecommendation);
@@ -144,15 +146,13 @@ function App() {
     }
   };
 
-  const getMarketLink = (item) => {
-    const affiliateTag = '4bUd3P7'; // Amazon affiliate tag
-    const searchQuery = encodeURIComponent(`${item.title} ${item.author} audiobook`);
+  const getMarketLink = () => {
+    const affiliateTag = 'vibeary06-21'; // Amazon affiliate tag
     
-    // Try Audible first (higher commission for audiobooks)
-    const audibleUrl = `https://www.audible.co.uk/search?keywords=${searchQuery}&tag=${affiliateTag}`;
+    // Use Amazon UK audiobooks section with new affiliate tag
+    const amazonUrl = `https://www.amazon.co.uk/b?node=59324880031&linkCode=ll2&tag=${affiliateTag}&linkId=cc0dbbf844929db02770735b1627607f&ref_=as_li_ss_tl`;
     
-    // Prioritize Audible for audiobooks
-    return audibleUrl;
+    return amazonUrl;
   };
 
   const completeOnboarding = () => {
@@ -331,16 +331,16 @@ function App() {
 
           <div className="flex space-x-2 mb-4">
             <a
-              href={getMarketLink(recommendation)}
+              href={getMarketLink()}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 bg-white text-slate-950 py-4 rounded-xl text-sm font-black flex items-center justify-center space-x-2 hover:bg-amber-50 transition-all active:scale-95 shadow-lg shadow-white/5"
             >
-              <span>GET ON AUDIBLE / AMAZON</span>
+              <span>GET ON AMAZON</span>
               <ExternalLink size={16} />
             </a>
             <button
-              onClick={() => navigator.clipboard.writeText(getMarketLink(recommendation))}
+              onClick={() => navigator.clipboard.writeText(getMarketLink())}
               className="bg-slate-700 hover:bg-slate-600 text-white py-4 px-4 rounded-xl flex items-center justify-center transition-all active:scale-95 hover:scale-105"
               title="Copy link"
             >
@@ -350,13 +350,13 @@ function App() {
 
           <div className="flex justify-center space-x-4 mt-4">
             <button
-              onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
+              onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out this audiobook recommendation: ${encodeURIComponent(recommendation.title)} by ${encodeURIComponent(recommendation.author)}&url=${encodeURIComponent(getMarketLink())}`, '_blank')}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Twitter size={16} /> <span>Share on Twitter</span>
             </button>
             <button
-              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink(recommendation))}`, '_blank')}
+              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getMarketLink())}`, '_blank')}
               className="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all"
             >
               <Facebook size={16} /> <span>Share on Facebook</span>
