@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react'
+import { useAuth } from './AuthContext'
+import AuthModal from './AuthModal';
 import './App.css';
 
 function App() {
+  const { user, signOut } = useAuth()
+
+  if (!user) return <AuthModal onClose={() => {}} />
+
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -13,6 +19,9 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(() => {
     return !localStorage.getItem('vibeary-onboarding-complete');
   });
+
+  const isPremium = false // TODO: check from database
+  const [usage, setUsage] = useState(() => parseInt(localStorage.getItem('vibeary-usage') || '0'))
 
   const archetypes = [
     { id: 'epic', label: 'Epic', icon: '🏛️' },
@@ -109,6 +118,12 @@ function App() {
     setLoading(true);
     setError('');
     
+    if (usage >= 5 && !isPremium) {
+      setError('Free users limited to 5 recommendations per day. Upgrade to premium for unlimited access.');
+      setLoading(false);
+      return;
+    }
+    
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -139,6 +154,10 @@ function App() {
       
       setRecommendation(mockRecommendation);
       setHistory(prev => [mockRecommendation, ...prev.slice(0, 9)]);
+      
+      // Increment usage
+      setUsage(usage + 1);
+      localStorage.setItem('vibeary-usage', usage + 1);
     } catch {
       setError('Failed to get recommendation. Please try again.');
     } finally {
@@ -250,6 +269,8 @@ function App() {
   <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out Vibeary: AI audiobook recommendations!&url=https://vibeary.vercel.app`, '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all">
     <Twitter size={16} /> <span>Share Vibeary</span>
   </button>
+  {user && <button onClick={signOut} className="bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded text-xs ml-2">Logout</button>}
+  {!isPremium && <button onClick={() => alert('Premium coming soon!')} className="bg-amber-600 hover:bg-amber-500 text-white py-2 px-4 rounded text-xs ml-2">Go Premium</button>}
       </header>
 
       <div className="grid grid-cols-4 gap-2 mb-6">
