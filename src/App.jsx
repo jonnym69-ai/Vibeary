@@ -17,7 +17,7 @@ function App() {
   const [error, setError] = useState('');
   const [recommendation, setRecommendation] = useState(null);
   const [history, setHistory] = useState([]);
-  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('vibeary-favorites') || '[]'));
+  const [favorites, setFavorites] = useState([]);
   const [activeArchetype, setActiveArchetype] = useState('epic');
   const [showOnboarding, setShowOnboarding] = useState(() => {
     return !localStorage.getItem('vibeary-onboarding-complete');
@@ -34,6 +34,25 @@ function App() {
       supabase.from('premium_users').select('*').eq('user_id', user.id).then(({ data }) => {
         setIsPremium(data && data.length > 0)
       })
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (user) {
+      supabase.from('user_favorites').select('data').eq('user_id', user.id).then(async ({ data }) => {
+        if (data && data.length > 0) {
+          setFavorites(data[0].data);
+        } else {
+          const localFavorites = JSON.parse(localStorage.getItem('vibeary-favorites') || '[]');
+          if (localFavorites.length > 0) {
+            await supabase.from('user_favorites').insert({ user_id: user.id, data: localFavorites });
+            setFavorites(localFavorites);
+            localStorage.removeItem('vibeary-favorites');
+          } else {
+            setFavorites([]);
+          }
+        }
+      });
     }
   }, [user])
 
@@ -207,7 +226,9 @@ function App() {
       newFavorites = [...favorites, rec];
     }
     setFavorites(newFavorites);
-    localStorage.setItem('vibeary-favorites', JSON.stringify(newFavorites));
+    if (user) {
+      supabase.from('user_favorites').upsert({ user_id: user.id, data: newFavorites });
+    }
   };
 
   const handleUpgrade = async (plan) => {
