@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react'
 import { useAuth } from './AuthContext'
 import AuthModal from './AuthModal';
+import SubscriptionManager from './components/SubscriptionManager'
+import StripePayment from './components/StripePayment'
+import { Elements } from '@stripe/react-stripe-js'
+import { stripePromise } from './stripe'
+import { supabase } from './supabaseClient'
 import './App.css';
 
 function App() {
@@ -18,8 +23,19 @@ function App() {
     return !localStorage.getItem('vibeary-onboarding-complete');
   });
 
-  const isPremium = false // TODO: check from database
+  const [isPremium, setIsPremium] = useState(false)
   const [usage, setUsage] = useState(() => parseInt(localStorage.getItem('vibeary-usage') || '0'))
+  const [showSubscription, setShowSubscription] = useState(false)
+  const [showPayment, setShowPayment] = useState(false)
+  const [clientSecret, setClientSecret] = useState('')
+
+  useEffect(() => {
+    if (user) {
+      supabase.from('premium_users').select('*').eq('user_id', user.id).then(({ data }) => {
+        setIsPremium(data && data.length > 0)
+      })
+    }
+  }, [user])
 
   if (!user) return <AuthModal onClose={() => {}} />
 
@@ -194,6 +210,24 @@ function App() {
     localStorage.setItem('vibeary-favorites', JSON.stringify(newFavorites));
   };
 
+  const handleUpgrade = async (plan) => {
+    const res = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id, plan })
+    })
+    const { clientSecret } = await res.json()
+    setClientSecret(clientSecret)
+    setShowSubscription(false)
+    setShowPayment(true)
+  }
+
+  const handlePaymentSuccess = async () => {
+    await supabase.from('premium_users').insert({ user_id: user.id })
+    setIsPremium(true)
+    setShowPayment(false)
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans p-6 max-w-md mx-auto pb-32 selection:bg-amber-500/30">
       {/* Onboarding Overlay */}
@@ -270,7 +304,7 @@ function App() {
     <Twitter size={16} /> <span>Share Vibeary</span>
   </button>
   {user && <button onClick={signOut} className="bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded text-xs ml-2">Logout</button>}
-  {!isPremium && <button onClick={() => alert('Premium coming soon!')} className="bg-amber-600 hover:bg-amber-500 text-white py-2 px-4 rounded text-xs ml-2">Go Premium</button>}
+  {!isPremium && <button onClick={() => setShowSubscription(true)} className="bg-amber-600 hover:bg-amber-500 text-white py-2 px-4 rounded text-xs ml-2">Go Premium</button>}
       </header>
 
       <div className="grid grid-cols-4 gap-2 mb-6">
@@ -477,6 +511,35 @@ function App() {
         <p className="text-[8px] text-slate-700 mt-1">Amazon Affiliate Site</p>
         <button onClick={() => window.open('https://www.amazon.co.uk/s?k=audiobook+headphones&tag=vibeary06-21', '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-1 px-3 rounded text-xs mt-2">Get Audiobook Headphones on Amazon</button>
       </div>
+
+      {showSubscription && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="max-w-4xl w-full relative">
+            <button onClick={() => setShowSubscription(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white z-10">
+              <X size={24} />
+            </button>
+            <SubscriptionManager
+              isPremium={false}
+              onUpgrade={handleUpgrade}
+              onCancel={() => setShowSubscription(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {showPayment && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="max-w-md w-full">
+            <Elements stripe={stripePromise}>
+              <StripePayment
+                clientSecret={clientSecret}
+                onSuccess={handlePaymentSuccess}
+                onCancel={() => setShowPayment(false)}
+              />
+            </Elements>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
