@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react'
 import { useAuth } from './AuthContext'
 import AuthModal from './AuthModal';
@@ -6,8 +6,6 @@ import './App.css';
 
 function App() {
   const { user, signOut } = useAuth()
-
-  if (!user) return <AuthModal onClose={() => {}} />
 
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,6 +20,8 @@ function App() {
 
   const isPremium = false // TODO: check from database
   const [usage, setUsage] = useState(() => parseInt(localStorage.getItem('vibeary-usage') || '0'))
+
+  if (!user) return <AuthModal onClose={() => {}} />
 
   const archetypes = [
     { id: 'epic', label: 'Epic', icon: '🏛️' },
