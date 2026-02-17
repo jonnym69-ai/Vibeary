@@ -56,14 +56,25 @@ function App() {
     }
   }, [user])
 
-  if (!user) return <AuthModal onClose={() => {}} />
-
-  const archetypes = [
+  const basicArchetypes = [
     { id: 'epic', label: 'Epic', icon: '🏛️' },
     { id: 'gritty', label: 'Gritty', icon: '🔥' },
     { id: 'fast', label: 'Fast', icon: '⚡' },
     { id: 'deep', label: 'Deep', icon: '🌊' },
   ];
+
+  const premiumArchetypes = [
+    ...basicArchetypes,
+    { id: 'romantic', label: 'Romantic', icon: '💕' },
+    { id: 'mystery', label: 'Mystery', icon: '🔍' },
+    { id: 'historical', label: 'Historical', icon: '📜' },
+    { id: 'vibe-of-the-week', label: 'Vibe of the Week', icon: '⭐' },
+  ];
+
+  const archetypes = isPremium ? premiumArchetypes : basicArchetypes;
+
+  if (!user) return <AuthModal onClose={() => {}} />
+
 
   const endings = [
     "delivers exceptional narration that brings every character to life.",
@@ -95,6 +106,8 @@ function App() {
       { title: 'The Lies of Locke Lamora', author: 'Scott Lynch', narrator: 'Michael Page', series: 'Gentleman Bastard' },
       { title: 'Assassin\'s Apprentice', author: 'Robin Hobb', narrator: 'Bryce Dale', series: 'Farseer Trilogy' },
       { title: 'The Blade Itself', author: 'Joe Abercrombie', narrator: 'Steven Pacey', series: 'First Law' },
+      { title: 'The Way of Kings', author: 'Brandon Sanderson', narrator: 'Michael Kramer', series: 'The Stormlight Archive' },
+      { title: 'Words of Radiance', author: 'Brandon Sanderson', narrator: 'Michael Kramer', series: 'The Stormlight Archive' },
     ],
     gritty: [
       { title: 'The Martian', author: 'Andy Weir', narrator: 'R.C. Bray' },
@@ -112,6 +125,8 @@ function App() {
       { title: 'American Gods', author: 'Neil Gaiman', narrator: 'Dennis Boutsikaris' },
       { title: 'The Killing Floor', author: 'Lee Child', narrator: 'Dick Hill' },
       { title: 'The Silent Patient', author: 'Alex Michaelides', narrator: 'Jack Hawkins' },
+      { title: 'The Killing Floor', author: 'Lee Child', narrator: 'Dick Hill' },
+      { title: 'Into the Wild', author: 'Jon Krakauer', narrator: 'Philip Franklin' },
     ],
     fast: [
       { title: 'The Hitchhiker\'s Guide to the Galaxy', author: 'Douglas Adams', narrator: 'Stephen Fry' },
@@ -129,6 +144,7 @@ function App() {
       { title: 'The Da Vinci Code', author: 'Dan Brown', narrator: 'Paul Michael' },
       { title: 'The Bourne Supremacy', author: 'Robert Ludlum', narrator: 'Scott Brick' },
       { title: 'The Girl with the Dragon Tattoo', author: 'Stieg Larsson', narrator: 'Simon Vance' },
+      { title: 'The Bourne Supremacy', author: 'Robert Ludlum', narrator: 'Scott Brick' },
     ],
     deep: [
       { title: 'Sapiens', author: 'Yuval Noah Harari', narrator: 'Derek Perkins' },
@@ -146,6 +162,35 @@ function App() {
       { title: 'How to Win Friends and Influence People', author: 'Dale Carnegie', narrator: 'Andrew MacMillan' },
       { title: 'The Psychology of Money', author: 'Morgan Housel', narrator: 'Chris Hill' },
       { title: 'The Alchemist', author: 'Paulo Coelho', narrator: 'Jeremy Irons' },
+      { title: 'The Four Agreements', author: 'Don Miguel Ruiz', narrator: 'Peter Coyote' },
+    ],
+    romantic: [
+      { title: 'Pride and Prejudice', author: 'Jane Austen', narrator: 'Rosamund Pike' },
+      { title: 'The Notebook', author: 'Nicholas Sparks', narrator: 'Patrick Lawlor' },
+      { title: 'Outlander', author: 'Diana Gabaldon', narrator: 'Davina Porter' },
+      { title: 'Me Before You', author: 'Jojo Moyes', narrator: 'Steven Webb' },
+      { title: 'The Time Traveler\'s Wife', author: 'Audrey Niffenegger', narrator: 'Kirsten Potter' },
+    ],
+    mystery: [
+      { title: 'The Girl on the Train', author: 'Paula Hawkins', narrator: 'Clare Corbett' },
+      { title: 'Gone Girl', author: 'Gillian Flynn', narrator: 'Julia Whelan' },
+      { title: 'The Silent Patient', author: 'Alex Michaelides', narrator: 'Jack Hawkins' },
+      { title: 'Big Little Lies', author: 'Liane Moriarty', narrator: 'Caroline Lee' },
+      { title: 'The Woman in the Window', author: 'A.J. Finn', narrator: 'Kirsten Potter' },
+    ],
+    historical: [
+      { title: 'The Book Thief', author: 'Markus Zusak', narrator: 'Allan Corduner' },
+      { title: 'The Pillars of the Earth', author: 'Ken Follett', narrator: 'John Lee' },
+      { title: 'Wolf Hall', author: 'Hilary Mantel', narrator: 'Simon Slater' },
+      { title: 'The Nightingale', author: 'Kristin Hannah', narrator: 'Polly Stone' },
+      { title: 'All the Light We Cannot See', author: 'Anthony Doerr', narrator: 'Zach Appelman' },
+    ],
+    'vibe-of-the-week': [
+      { title: 'Atomic Habits', author: 'James Clear', narrator: 'James Clear' },
+      { title: 'The Midnight Library', author: 'Matt Haig', narrator: 'Carey Mulligan' },
+      { title: 'Educated', author: 'Tara Westover', narrator: 'Julia Whelan' },
+      { title: 'The Seven Husbands of Evelyn Hugo', author: 'Taylor Jenkins Reid', narrator: 'Alma Cuervo' },
+      { title: 'Where the Crawdads Sing', author: 'Delia Owens', narrator: 'Cassandra Campbell' },
     ],
   };
 
