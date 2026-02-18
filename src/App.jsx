@@ -7,7 +7,18 @@ import StripePayment from './components/StripePayment'
 import { Elements } from '@stripe/react-stripe-js'
 import { stripePromise } from './stripe'
 import { supabase } from './supabaseClient'
+import OnboardModal from './components/OnboardModal';
+import ProductForm from './components/ProductForm';
+import Storefront from './components/Storefront';
+import { loadStripe } from '@stripe/stripe-js';
+import ConnectDashboard from './components/ConnectDashboard';
 import './App.css';
+
+// Add Stripe Pricing Table script
+const stripeScript = document.createElement('script');
+stripeScript.src = 'https://js.stripe.com/v3/pricing-table.js';
+stripeScript.async = true;
+document.head.appendChild(stripeScript);
 
 function App() {
   const { user, signOut } = useAuth()
@@ -28,6 +39,15 @@ function App() {
   const [showSubscription, setShowSubscription] = useState(false)
   const [showPayment, setShowPayment] = useState(false)
   const [clientSecret, setClientSecret] = useState('')
+
+  // Stripe Connect state
+  const [showOnboard, setShowOnboard] = useState(false);
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [showStorefront, setShowStorefront] = useState(false);
+  const [accountId, setAccountId] = useState(null);
+
+  // Library import state
+  const [showConnectDashboard, setShowConnectDashboard] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -210,6 +230,27 @@ function App() {
       
       const allBooks = Object.values(books).flat();
       const archetypeBooks = books[activeArchetype];
+      
+      // Get user's library to avoid recommending owned books
+      let userLibraryTitles = [];
+      if (user && isPremium) {
+        try {
+          const { data: library } = await supabase
+            .from('user_library')
+            .select('title, author')
+            .eq('user_id', user.id);
+          
+          if (library) {
+            userLibraryTitles = library.map(book => ({
+              title: book.title.toLowerCase(),
+              author: book.author?.toLowerCase() || ''
+            }));
+          }
+        } catch (err) {
+          console.log('Could not fetch user library:', err);
+        }
+      }
+      
       let selectedBooks;
       if (surprise) {
         selectedBooks = allBooks;
@@ -220,7 +261,27 @@ function App() {
         );
         selectedBooks = filteredBooks.length > 0 ? filteredBooks : archetypeBooks;
       }
-      const randomBook = selectedBooks[Math.floor(Math.random() * selectedBooks.length)];
+      
+      // Filter out books user already owns
+      const availableBooks = selectedBooks.filter(book => {
+        if (!isPremium) return true; // Free users don't have library filtering
+        
+        const bookTitle = book.title.toLowerCase();
+        const bookAuthor = book.author.toLowerCase();
+        
+        return !userLibraryTitles.some(owned => 
+          owned.title === bookTitle && 
+          (owned.author === bookAuthor || owned.author === '' || bookAuthor === '')
+        );
+      });
+      
+      if (availableBooks.length === 0) {
+        setError('You already own all books in this category! Try a different vibe or import fewer books.');
+        setLoading(false);
+        return;
+      }
+      
+      const randomBook = availableBooks[Math.floor(Math.random() * availableBooks.length)];
       
       const mockRecommendation = {
         id: Date.now(),
@@ -371,6 +432,10 @@ function App() {
   </button>
   {user && <button onClick={signOut} className="bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded text-xs ml-2">Logout</button>}
   {!isPremium && <button onClick={() => setShowSubscription(true)} className="bg-amber-600 hover:bg-amber-500 text-white py-2 px-4 rounded text-xs ml-2">Go Premium</button>}
+  {user && <button onClick={() => setShowOnboard(true)} className="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded text-xs ml-2">Onboard to Connect</button>}
+  {user && accountId && <button onClick={() => setShowProductForm(true)} className="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded text-xs ml-2">Create Product</button>}
+  {user && <button onClick={() => setShowStorefront(true)} className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded text-xs ml-2">View Storefront</button>}
+  {isPremium && <button onClick={() => setShowLibraryImport(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 px-4 rounded text-xs ml-2">Import Library</button>}
       </header>
 
       <div className="grid grid-cols-4 gap-2 mb-6">
@@ -584,11 +649,13 @@ function App() {
             <button onClick={() => setShowSubscription(false)} className="absolute top-4 right-4 text-slate-400 hover:text-white z-10">
               <X size={24} />
             </button>
-            <SubscriptionManager
-              isPremium={false}
-              onUpgrade={handleUpgrade}
-              onCancel={() => setShowSubscription(false)}
-            />
+            <div className="bg-slate-800 rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">Choose Your Plan</h2>
+              <stripe-pricing-table 
+                pricing-table-id="prctbl_1T1nNE5zp7Kd7fwDdCw2SIaP"
+                publishable-key="pk_live_51T1Wtd5zp7Kd7fwDOSSzSKU12Q6b0Xe8LExqyrQA7azn5T36pJxZ2nokuMT8LuwkIC19U0K8jlmBBlonB2ewcmXJ000BefSaH9">
+              </stripe-pricing-table>
+            </div>
           </div>
         </div>
       )}
@@ -606,6 +673,12 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Stripe Connect Modals */}
+      {showOnboard && <OnboardModal setAccountId={setAccountId} onClose={() => setShowOnboard(false)} />}
+      {showProductForm && accountId && <ProductForm accountId={accountId} onClose={() => setShowProductForm(false)} />}
+      {showStorefront && <Storefront accountId={accountId} />}
+      {showLibraryImport && <LibraryImport user={user} onClose={() => setShowLibraryImport(false)} />}
     </div>
   );
 }
