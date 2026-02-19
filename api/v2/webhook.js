@@ -125,7 +125,6 @@ async function handleSubscriptionUpdated(event) {
 // Handler for subscription deletion
 async function handleSubscriptionDeleted(event) {
   const subscription = event.data.object;
-  const accountId = subscription.customer_account;
 
   // Mark subscription as canceled
   const { error } = await supabase

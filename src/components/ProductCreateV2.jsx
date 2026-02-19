@@ -65,7 +65,7 @@ export default function ProductCreateV2({ accountId, onProductCreated }) {
       } else {
         setError(data.error);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to create product');
     } finally {
       setLoading(false);

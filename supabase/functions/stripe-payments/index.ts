@@ -133,6 +133,30 @@ async function handleWebhook(req) {
         console.log("Subscription cancelled:", event.data.object.id);
         break;
 
+      case "checkout.session.completed":
+        const session = event.data.object;
+        const userId = session.metadata?.user_id;
+        console.log("Checkout completed for user:", userId);
+        
+        if (userId && session.mode === 'subscription') {
+          // Activate premium access
+          const { error } = await supabase
+            .from('premium_users')
+            .upsert({
+              user_id: userId,
+              stripe_customer_id: session.customer,
+              stripe_subscription_id: session.subscription,
+              updated_at: new Date().toISOString()
+            });
+          
+          if (error) {
+            console.error('Error activating premium:', error);
+          } else {
+            console.log('Premium activated for user:', userId);
+          }
+        }
+        break;
+
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }

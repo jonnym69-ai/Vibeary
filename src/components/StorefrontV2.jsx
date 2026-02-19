@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // Component for displaying a storefront of products from a connected Stripe account
 // Shows products in a clean grid layout with purchase buttons
@@ -8,15 +8,8 @@ export default function StorefrontV2({ accountId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load products when accountId changes
-  useEffect(() => {
-    if (accountId) {
-      loadProducts();
-    }
-  }, [accountId]);
-
   // Fetch products from the connected account
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -29,12 +22,19 @@ export default function StorefrontV2({ accountId }) {
       } else {
         setError('Failed to load products');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to load products');
     } finally {
       setLoading(false);
     }
-  };
+  }, [accountId]);
+
+  // Load products when accountId changes
+  useEffect(() => {
+    if (accountId) {
+      loadProducts();
+    }
+  }, [loadProducts]);
 
   // Handle product purchase
   const handlePurchase = async (product) => {
@@ -60,11 +60,11 @@ export default function StorefrontV2({ accountId }) {
 
       if (data.url) {
         // Redirect to Stripe Checkout
-        window.location.href = data.url;
+        window.location.assign(data.url);
       } else {
         setError(data.error || 'Failed to create checkout session');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to initiate purchase');
     }
   };

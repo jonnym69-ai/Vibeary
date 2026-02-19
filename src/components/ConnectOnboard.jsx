@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../AuthContext';
 
 // Component for managing Stripe Connect onboarding
 // Displays account status and provides onboarding link
@@ -16,10 +16,10 @@ export default function ConnectOnboard() {
     if (user) {
       loadAccount();
     }
-  }, [user]);
+  }, [user, loadAccount]);
 
   // Fetch the user's connected account from database
-  const loadAccount = async () => {
+  const loadAccount = useCallback(async () => {
     try {
       const response = await fetch(`/api/v2/get-user-account?userId=${user.id}`);
       const data = await response.json();
@@ -31,7 +31,7 @@ export default function ConnectOnboard() {
       console.error('Failed to load account:', err);
       setError('Failed to load account');
     }
-  };
+  }, [user]);
 
   // Fetch account status from Stripe API
   const loadStatus = async (accId) => {
@@ -39,7 +39,7 @@ export default function ConnectOnboard() {
       const response = await fetch(`/api/v2/account-status?accountId=${accId}`);
       const data = await response.json();
       setStatus(data);
-    } catch (err) {
+    } catch {
       setError('Failed to load status');
     }
   };
@@ -72,7 +72,7 @@ export default function ConnectOnboard() {
       } else {
         setError(data.error);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to create account');
     } finally {
       setLoading(false);
@@ -101,7 +101,7 @@ export default function ConnectOnboard() {
       } else {
         setError('Failed to create onboarding link');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to start onboarding');
     } finally {
       setLoading(false);

@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart } from 'lucide-react'
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart, Ghost } from 'lucide-react'
 import { useAuth } from './AuthContext'
 import AuthModal from './AuthModal';
 import SubscriptionManager from './components/SubscriptionManager'
-import StripePayment from './components/StripePayment'
-import { Elements } from '@stripe/react-stripe-js'
-import { stripePromise } from './stripe'
 import { supabase } from './supabaseClient'
 import OnboardModal from './components/OnboardModal';
 import ProductForm from './components/ProductForm';
 import Storefront from './components/Storefront';
-import { loadStripe } from '@stripe/stripe-js';
 import ConnectDashboard from './components/ConnectDashboard';
+import LibraryImport from './components/LibraryImport';
 import './App.css';
 
 // Add Stripe Pricing Table script
@@ -34,25 +31,23 @@ function App() {
     return !localStorage.getItem('vibeary-onboarding-complete');
   });
 
-  const [isPremium, setIsPremium] = useState(false)
+  const isPremium = true // Temporarily true for testing, no setter needed
   const [usage, setUsage] = useState(() => parseInt(localStorage.getItem('vibeary-usage') || '0'))
   const [showSubscription, setShowSubscription] = useState(false)
-  const [showPayment, setShowPayment] = useState(false)
-  const [clientSecret, setClientSecret] = useState('')
 
   // Stripe Connect state
-  const [showOnboard, setShowOnboard] = useState(false);
+  // const [showOnboard, setShowOnboard] = useState(false); // Removed for testing
   const [showProductForm, setShowProductForm] = useState(false);
   const [showStorefront, setShowStorefront] = useState(false);
-  const [accountId, setAccountId] = useState(null);
+  const accountId = null; // Temporarily null for testing
 
   // Library import state
-  const [showConnectDashboard, setShowConnectDashboard] = useState(false);
+  const [showLibraryImport, setShowLibraryImport] = useState(false);
 
   useEffect(() => {
     if (user) {
       supabase.from('premium_users').select('*').eq('user_id', user.id).then(({ data }) => {
-        setIsPremium(data && data.length > 0)
+        // setIsPremium(data && data.length > 0) // Commented out for testing
       })
     }
   }, [user])
@@ -85,10 +80,13 @@ function App() {
 
   const premiumArchetypes = [
     ...basicArchetypes,
-    { id: 'romantic', label: 'Romantic', icon: '💕' },
-    { id: 'mystery', label: 'Mystery', icon: '🔍' },
-    { id: 'historical', label: 'Historical', icon: '📜' },
-    { id: 'vibe-of-the-week', label: 'Vibe of the Week', icon: '⭐' },
+    { id: 'romantic', label: 'Romantic', icon: <Heart size={16} />, description: 'Love stories and emotional journeys' },
+    { id: 'mystery', label: 'Mystery', icon: '🔍', description: 'Thrilling mysteries and suspenseful plots' },
+    { id: 'historical', label: 'Historical', icon: '📜', description: 'Stories set in the past with rich historical detail' },
+    { id: 'scary', label: 'Scary', icon: <Ghost size={16} />, description: 'Horror and spine-tingling thrills' },
+    { id: 'comedy', label: 'Comedy', icon: '😂', description: 'Humorous and funny stories' },
+    { id: 'adventure', label: 'Adventure', icon: '🗺️', description: 'Exciting adventures and journeys' },
+    { id: 'vibe-of-the-week', label: 'Vibe of the Week', icon: '⭐', description: 'Curated picks for the current trend' },
   ];
 
   const archetypes = isPremium ? premiumArchetypes : basicArchetypes;
@@ -185,25 +183,25 @@ function App() {
       { title: 'The Four Agreements', author: 'Don Miguel Ruiz', narrator: 'Peter Coyote' },
     ],
     romantic: [
-      { title: 'Pride and Prejudice', author: 'Jane Austen', narrator: 'Rosamund Pike' },
-      { title: 'The Notebook', author: 'Nicholas Sparks', narrator: 'Patrick Lawlor' },
-      { title: 'Outlander', author: 'Diana Gabaldon', narrator: 'Davina Porter' },
-      { title: 'Me Before You', author: 'Jojo Moyes', narrator: 'Steven Webb' },
-      { title: 'The Time Traveler\'s Wife', author: 'Audrey Niffenegger', narrator: 'Kirsten Potter' },
+      { title: 'Pride and Prejudice', author: 'Jane Austen', narrator: 'Rosamund Pike', description: 'A witty romance about Elizabeth Bennet and Mr. Darcy navigating love, class, and societal expectations in Regency England.' },
+      { title: 'The Notebook', author: 'Nicholas Sparks', narrator: 'Patrick Lawlor', description: 'A poignant love story of two young people from different backgrounds who fall in love and are separated by fate.' },
+      { title: 'Outlander', author: 'Diana Gabaldon', narrator: 'Davina Porter', description: 'A time-traveling nurse finds herself in 18th-century Scotland and falls in love with a Highland warrior.' },
+      { title: 'Me Before You', author: 'Jojo Moyes', narrator: 'Steven Webb', description: 'A young woman is hired to care for a quadriplegic man, and their relationship challenges their views on life and love.' },
+      { title: 'The Time Traveler\'s Wife', author: 'Audrey Niffenegger', narrator: 'Kirsten Potter', description: 'A man with a genetic disorder that causes him to time travel unpredictably, and his artist wife who has to cope with his frequent absences.' },
     ],
     mystery: [
-      { title: 'The Girl on the Train', author: 'Paula Hawkins', narrator: 'Clare Corbett' },
-      { title: 'Gone Girl', author: 'Gillian Flynn', narrator: 'Julia Whelan' },
-      { title: 'The Silent Patient', author: 'Alex Michaelides', narrator: 'Jack Hawkins' },
-      { title: 'Big Little Lies', author: 'Liane Moriarty', narrator: 'Caroline Lee' },
-      { title: 'The Woman in the Window', author: 'A.J. Finn', narrator: 'Kirsten Potter' },
+      { title: 'The Girl on the Train', author: 'Paula Hawkins', narrator: 'Clare Corbett', description: 'A woman who takes the same train every day becomes entangled in a missing persons case that hits close to home.' },
+      { title: 'Gone Girl', author: 'Gillian Flynn', narrator: 'Julia Whelan', description: 'A man becomes the prime suspect when his wife goes missing on their fifth wedding anniversary.' },
+      { title: 'The Silent Patient', author: 'Alex Michaelides', narrator: 'Jack Hawkins', description: 'A psychotherapist becomes obsessed with a patient who has stopped speaking after murdering her husband.' },
+      { title: 'Big Little Lies', author: 'Liane Moriarty', narrator: 'Caroline Lee', description: 'The lives of three women intertwine on the first day of kindergarten, leading to murder and mayhem.' },
+      { title: 'The Woman in the Window', author: 'A.J. Finn', narrator: 'Kirsten Potter', description: 'An agoraphobic woman becomes convinced she has witnessed a crime in the house across the street.' },
     ],
     historical: [
-      { title: 'The Book Thief', author: 'Markus Zusak', narrator: 'Allan Corduner' },
-      { title: 'The Pillars of the Earth', author: 'Ken Follett', narrator: 'John Lee' },
-      { title: 'Wolf Hall', author: 'Hilary Mantel', narrator: 'Simon Slater' },
-      { title: 'The Nightingale', author: 'Kristin Hannah', narrator: 'Polly Stone' },
-      { title: 'All the Light We Cannot See', author: 'Anthony Doerr', narrator: 'Zach Appelman' },
+      { title: 'The Book Thief', author: 'Markus Zusak', narrator: 'Allan Corduner', description: 'A young girl living in Nazi Germany steals books and shares them with others, narrated by Death itself.' },
+      { title: 'The Pillars of the Earth', author: 'Ken Follett', narrator: 'John Lee', description: 'A master builder and his family struggle to build a cathedral amidst political and religious turmoil in 12th-century England.' },
+      { title: 'Wolf Hall', author: 'Hilary Mantel', narrator: 'Simon Slater', description: 'The rise of Thomas Cromwell in the court of Henry VIII, exploring power, politics, and religion.' },
+      { title: 'The Nightingale', author: 'Kristin Hannah', narrator: 'Polly Stone', description: 'Two sisters in France during World War II make different choices in their fight for survival and resistance.' },
+      { title: 'All the Light We Cannot See', author: 'Anthony Doerr', narrator: 'Zach Appelman', description: 'A blind French girl and a German boy whose paths collide in occupied France during World War II.' },
     ],
     'vibe-of-the-week': [
       { title: 'Atomic Habits', author: 'James Clear', narrator: 'James Clear' },
@@ -212,17 +210,33 @@ function App() {
       { title: 'The Seven Husbands of Evelyn Hugo', author: 'Taylor Jenkins Reid', narrator: 'Alma Cuervo' },
       { title: 'Where the Crawdads Sing', author: 'Delia Owens', narrator: 'Cassandra Campbell' },
     ],
+    comedy: [
+      { title: 'Good Omens', author: 'Neil Gaiman and Terry Pratchett', narrator: 'Martin Jarvis', description: 'An angel and a demon team up to prevent the apocalypse in this hilarious take on the end of the world.' },
+      { title: 'The Princess Bride', author: 'William Goldman', narrator: 'Rob Reiner', description: 'A swashbuckling adventure filled with true love, giants, revenge, and lots of humor.' },
+      { title: 'High Fidelity', author: 'Nick Hornby', narrator: 'Stephen Fry', description: 'A record store owner reflects on his past relationships and the music that shaped his life.' },
+    ],
+    adventure: [
+      { title: 'The Adventures of Huckleberry Finn', author: 'Mark Twain', narrator: 'Various', description: 'A boy and a runaway slave embark on a journey down the Mississippi River, exploring freedom and friendship.' },
+      { title: 'Treasure Island', author: 'Robert Louis Stevenson', narrator: 'Various', description: 'Young Jim Hawkins discovers a treasure map and sets sail on a pirate adventure.' },
+      { title: 'The Call of the Wild', author: 'Jack London', narrator: 'Various', description: 'Buck, a domesticated dog, is thrust into the wild and must learn to survive.' },
+    ],
+    scary: [
+      { title: 'The Shining', author: 'Stephen King', narrator: 'Campbell Scott', description: 'A family heads to an isolated hotel for the winter where a sinister presence influences the father into violence, while his psychic son sees horrific forebodings from both past and future.' },
+      { title: 'Dracula', author: 'Bram Stoker', narrator: 'Alan Cumming', description: 'The classic vampire tale of Count Dracula\'s attempt to move from Transylvania to England, and the group of people who band together to stop him.' },
+      { title: 'Frankenstein', author: 'Mary Shelley', narrator: 'Dan Stevens', description: 'A young scientist creates a grotesque but sentient creature in an unorthodox experiment, leading to tragic consequences.' },
+      { title: 'The Haunting of Hill House', author: 'Shirley Jackson', narrator: 'Bernadette Dunne', description: 'Four individuals stay at the notoriously haunted Hill House to investigate paranormal activity, but the house\'s malevolent presence begins to unravel their sanity.' },
+    ],
   };
 
   const getAIRecommendation = async (queryParam = '', surprise = false) => {
     setLoading(true);
     setError('');
     
-    if (usage >= 5 && !isPremium) {
-      setError('Free users limited to 5 recommendations per day. Upgrade to premium for unlimited access.');
-      setLoading(false);
-      return;
-    }
+    // if (usage >= 10 && !isPremium) {
+      // setError('Free users limited to 10 recommendations per day. Upgrade to premium for unlimited access.');
+      // setLoading(false);
+      // return;
+    // }
     
     try {
       // Simulate API call
@@ -290,7 +304,7 @@ function App() {
         narrator: randomBook.narrator,
         vibe: activeArchetype,
         match_score: Math.floor(Math.random() * 30) + 70,
-        match_reason: `${randomBook.title} by ${randomBook.author} is a perfect ${activeArchetype} match. Narrated by ${randomBook.narrator}, this audiobook ${endings[Math.floor(Math.random() * endings.length)]}`,
+        match_reason: `${randomBook.title} by ${randomBook.author} is a perfect ${activeArchetype} match. ${randomBook.description || ''} Narrated by ${randomBook.narrator}, this audiobook ${endings[Math.floor(Math.random() * endings.length)]}`,
       };
       
       setRecommendation(mockRecommendation);
@@ -337,24 +351,6 @@ function App() {
     }
   };
 
-  const handleUpgrade = async (plan) => {
-    const res = await fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id, plan })
-    })
-    const { clientSecret } = await res.json()
-    setClientSecret(clientSecret)
-    setShowSubscription(false)
-    setShowPayment(true)
-  }
-
-  const handlePaymentSuccess = async () => {
-    await supabase.from('premium_users').insert({ user_id: user.id })
-    setIsPremium(true)
-    setShowPayment(false)
-  }
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans p-6 max-w-md mx-auto pb-32 selection:bg-amber-500/30">
       {/* Onboarding Overlay */}
@@ -366,7 +362,7 @@ function App() {
             </button>
             <div className="text-center mb-6">
               <div className="text-6xl mb-4">🎧</div>
-              <h2 className="text-2xl font-bold text-white mb-3">Welcome to Vibeary!</h2>
+              <h2 className="text-2xl font-bold text-white mb-3">Welcome to Viberary!</h2>
               <p className="text-slate-400 text-sm mb-6">Your AI audiobook scout that finds perfect matches based on your reading vibe.</p>
             </div>
             
@@ -423,16 +419,15 @@ function App() {
 
       <header className="text-center mb-10 animate-in fade-in duration-700">
         <h1 className="text-4xl font-black tracking-tighter text-white">
-          VIBE<span className="text-amber-500 italic">ARY</span>
+          VIBE<span className="text-amber-500 italic">RARY</span>
         </h1>
         <p className="text-slate-500 text-[10px] uppercase font-bold tracking-[0.4em] mt-1">Audio Scout v1.2.6</p>
 
-  <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out Vibeary: AI audiobook recommendations!&url=https://vibeary.vercel.app`, '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all">
-    <Twitter size={16} /> <span>Share Vibeary</span>
+  <button onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out Viberary: AI audiobook recommendations!&url=https://viberary.vercel.app`, '_blank')} className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded flex items-center space-x-2 text-xs hover:scale-105 transition-all">
+    <Twitter size={16} /> <span>Share Viberary</span>
   </button>
   {user && <button onClick={signOut} className="bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded text-xs ml-2">Logout</button>}
   {!isPremium && <button onClick={() => setShowSubscription(true)} className="bg-amber-600 hover:bg-amber-500 text-white py-2 px-4 rounded text-xs ml-2">Go Premium</button>}
-  {user && <button onClick={() => setShowOnboard(true)} className="bg-purple-600 hover:bg-purple-500 text-white py-2 px-4 rounded text-xs ml-2">Onboard to Connect</button>}
   {user && accountId && <button onClick={() => setShowProductForm(true)} className="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded text-xs ml-2">Create Product</button>}
   {user && <button onClick={() => setShowStorefront(true)} className="bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded text-xs ml-2">View Storefront</button>}
   {isPremium && <button onClick={() => setShowLibraryImport(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white py-2 px-4 rounded text-xs ml-2">Import Library</button>}
@@ -568,9 +563,10 @@ function App() {
             <div className="space-y-3">
               {getRelatedBooks(recommendation).map(book => (
                 <div key={book.title} className="bg-slate-900/40 border border-slate-800/50 p-3 rounded-xl flex justify-between items-center">
-                  <div>
+                  <div className="flex-1 pr-4">
                     <p className="text-sm font-bold text-white">{book.title}</p>
                     <p className="text-xs text-slate-400">by {book.author}</p>
+                    {book.description && <p className="text-xs text-slate-500 mt-1">{book.description}</p>}
                   </div>
                   <a href={getMarketLink(book)} target="_blank" rel="noopener noreferrer" className="bg-amber-500 hover:bg-amber-600 text-white py-2 px-3 rounded text-xs">Get on Amazon</a>
                 </div>
@@ -660,22 +656,7 @@ function App() {
         </div>
       )}
 
-      {showPayment && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="max-w-md w-full">
-            <Elements stripe={stripePromise}>
-              <StripePayment
-                clientSecret={clientSecret}
-                onSuccess={handlePaymentSuccess}
-                onCancel={() => setShowPayment(false)}
-              />
-            </Elements>
-          </div>
-        </div>
-      )}
-
       {/* Stripe Connect Modals */}
-      {showOnboard && <OnboardModal setAccountId={setAccountId} onClose={() => setShowOnboard(false)} />}
       {showProductForm && accountId && <ProductForm accountId={accountId} onClose={() => setShowProductForm(false)} />}
       {showStorefront && <Storefront accountId={accountId} />}
       {showLibraryImport && <LibraryImport user={user} onClose={() => setShowLibraryImport(false)} />}

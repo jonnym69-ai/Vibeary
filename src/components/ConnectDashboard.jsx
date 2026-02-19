@@ -10,7 +10,6 @@ import SubscriptionV2 from './SubscriptionV2';
 export default function ConnectDashboard() {
   const [activeTab, setActiveTab] = useState('onboard');
   const [accountId, setAccountId] = useState(null);
-  const [products, setProducts] = useState([]);
 
   // Handle account creation/update
   const handleAccountUpdate = (newAccountId) => {
@@ -19,7 +18,6 @@ export default function ConnectDashboard() {
 
   // Handle new product creation
   const handleProductCreated = (product) => {
-    setProducts(prev => [...prev, product]);
     // Switch to storefront to see the new product
     setActiveTab('storefront');
   };
@@ -61,7 +59,7 @@ export default function ConnectDashboard() {
             accountId={accountId}
             onAccountUpdate={handleAccountUpdate}
             onProductCreated={handleProductCreated}
-            subscriptionPriceId={process.env.REACT_APP_SUBSCRIPTION_PRICE_ID || 'price_placeholder'} // TODO: Set actual price ID
+            subscriptionPriceId={import.meta.env.VITE_SUBSCRIPTION_PRICE_ID || 'price_placeholder'} // TODO: Set actual price ID
           />
         )}
       </div>

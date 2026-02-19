@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // Component for managing subscriptions on a connected Stripe account
 // Shows current subscription status and provides options to subscribe or manage billing
@@ -8,15 +8,8 @@ export default function SubscriptionV2({ accountId, subscriptionPriceId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load subscriptions when accountId changes
-  useEffect(() => {
-    if (accountId) {
-      loadSubscriptions();
-    }
-  }, [accountId]);
-
   // Fetch subscriptions for the connected account
-  const loadSubscriptions = async () => {
+  const loadSubscriptions = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -29,12 +22,19 @@ export default function SubscriptionV2({ accountId, subscriptionPriceId }) {
       } else {
         setError('Failed to load subscriptions');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to load subscriptions');
     } finally {
       setLoading(false);
     }
-  };
+  }, [accountId]);
+
+  // Load subscriptions when accountId changes
+  useEffect(() => {
+    if (accountId) {
+      loadSubscriptions();
+    }
+  }, [loadSubscriptions]);
 
   // Get the active subscription
   const activeSubscription = subscriptions.find(sub => sub.status === 'active' || sub.status === 'trialing');
@@ -62,11 +62,11 @@ export default function SubscriptionV2({ accountId, subscriptionPriceId }) {
 
       if (data.url) {
         // Redirect to Stripe Checkout
-        window.location.href = data.url;
+        window.location.assign(data.url);
       } else {
         setError(data.error || 'Failed to create subscription checkout');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to initiate subscription');
     }
   };
@@ -88,11 +88,11 @@ export default function SubscriptionV2({ accountId, subscriptionPriceId }) {
 
       if (data.url) {
         // Redirect to Billing Portal
-        window.location.href = data.url;
+        window.location.assign(data.url);
       } else {
         setError(data.error || 'Failed to create billing portal');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to access billing portal');
     }
   };

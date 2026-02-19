@@ -26,7 +26,7 @@ const Storefront = ({ accountId }) => {
       });
       const data = await res.json();
       if (res.ok) {
-        window.location.href = data.url; // Redirect to Stripe checkout
+        window.location.assign(data.url); // Redirect to Stripe checkout
       } else {
         alert(`Error: ${data.error}`);
       }

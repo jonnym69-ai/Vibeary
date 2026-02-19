@@ -1,0 +1,14 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["@eslint/js/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-unused-vars": ["error", { "varsIgnorePattern": "^[A-Z_]", "argsIgnorePattern": "^_" }]
+  }
+}
