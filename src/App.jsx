@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart, Ghost } from 'lucide-react'
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart, Ghost, Lock } from 'lucide-react'
 import { useAuth } from './AuthContext'
 import AuthModal from './AuthModal';
 import SubscriptionManager from './components/SubscriptionManager'
@@ -31,7 +31,7 @@ function App() {
     return !localStorage.getItem('vibeary-onboarding-complete');
   });
 
-  const isPremium = true // Temporarily true for testing, no setter needed
+  const [isPremium, setIsPremium] = useState(false)
   const [usage, setUsage] = useState(() => parseInt(localStorage.getItem('vibeary-usage') || '0'))
   const [showSubscription, setShowSubscription] = useState(false)
 
@@ -47,7 +47,7 @@ function App() {
   useEffect(() => {
     if (user) {
       supabase.from('premium_users').select('*').eq('user_id', user.id).then(({ data }) => {
-        // setIsPremium(data && data.length > 0) // Commented out for testing
+        setIsPremium(data && data.length > 0)
       })
     }
   }, [user])
@@ -79,17 +79,20 @@ function App() {
   ];
 
   const premiumArchetypes = [
-    ...basicArchetypes,
-    { id: 'romantic', label: 'Romantic', icon: <Heart size={16} />, description: 'Love stories and emotional journeys' },
-    { id: 'mystery', label: 'Mystery', icon: '🔍', description: 'Thrilling mysteries and suspenseful plots' },
-    { id: 'historical', label: 'Historical', icon: '📜', description: 'Stories set in the past with rich historical detail' },
-    { id: 'scary', label: 'Scary', icon: <Ghost size={16} />, description: 'Horror and spine-tingling thrills' },
-    { id: 'comedy', label: 'Comedy', icon: '😂', description: 'Humorous and funny stories' },
-    { id: 'adventure', label: 'Adventure', icon: '🗺️', description: 'Exciting adventures and journeys' },
-    { id: 'vibe-of-the-week', label: 'Vibe of the Week', icon: '⭐', description: 'Curated picks for the current trend' },
+    { id: 'epic', label: 'Epic', icon: <Sword size={16} />, description: 'Grand adventures and heroic journeys' },
+    { id: 'gritty', label: 'Gritty', icon: <Zap size={16} />, description: 'Raw, intense stories with edge' },
+    { id: 'fast', label: 'Fast', icon: <Clock size={16} />, description: 'Quick reads, fast-paced action' },
+    { id: 'deep', label: 'Deep', icon: <Brain size={16} />, description: 'Thought-provoking, philosophical narratives' },
+    { id: 'romantic', label: 'Romantic', icon: <Heart size={16} />, description: 'Love stories and emotional journeys', premium: true },
+    { id: 'mystery', label: 'Mystery', icon: '🔍', description: 'Thrilling mysteries and suspenseful plots', premium: true },
+    { id: 'historical', label: 'Historical', icon: '📜', description: 'Stories set in the past with rich historical detail', premium: true },
+    { id: 'scary', label: 'Scary', icon: <Ghost size={16} />, description: 'Horror and spine-tingling thrills', premium: true },
+    { id: 'comedy', label: 'Comedy', icon: '😂', description: 'Humorous and funny stories', premium: true },
+    { id: 'adventure', label: 'Adventure', icon: '🗺️', description: 'Exciting adventures and journeys', premium: true },
+    { id: 'vibe-of-the-week', label: 'Vibe of the Week', icon: '⭐', description: 'Curated picks for the current trend', premium: true },
   ];
 
-  const archetypes = isPremium ? premiumArchetypes : basicArchetypes;
+  const archetypes = premiumArchetypes;
 
   if (!user) return <AuthModal onClose={() => {}} />
 
@@ -232,11 +235,11 @@ function App() {
     setLoading(true);
     setError('');
     
-    // if (usage >= 10 && !isPremium) {
-      // setError('Free users limited to 10 recommendations per day. Upgrade to premium for unlimited access.');
-      // setLoading(false);
-      // return;
-    // }
+    if (usage >= 10 && !isPremium) {
+      setError('Free users limited to 10 recommendations per day. Upgrade to premium for unlimited access.');
+      setLoading(false);
+      return;
+    }
     
     try {
       // Simulate API call
@@ -437,15 +440,24 @@ function App() {
         {archetypes.map((arch) => (
           <button
             key={arch.id}
-            onClick={() => setActiveArchetype(arch.id)}
+            onClick={() => {
+              if (arch.premium && !isPremium) {
+                setShowSubscription(true);
+              } else {
+                setActiveArchetype(arch.id);
+              }
+            }}
             className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all ${
               activeArchetype === arch.id
                 ? 'bg-amber-600/20 border-amber-500 text-amber-500 shadow-lg shadow-amber-900/20'
                 : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-700'
-            }`}
+            } ${arch.premium && !isPremium ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {arch.icon}
-            <span className="text-[10px] font-black uppercase mt-1 tracking-tighter">{arch.label}</span>
+            <div className="relative mb-1">
+              {arch.icon}
+              {arch.premium && !isPremium && <Lock size={10} className="absolute -top-1 -right-1 text-amber-400" />}
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-tighter">{arch.label}</span>
           </button>
         ))}
       </div>
