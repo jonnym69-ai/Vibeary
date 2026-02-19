@@ -1,5 +1,6 @@
+// Trigger redeploy
 import React, { useState, useEffect } from 'react'
-import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart, Ghost, Lock, Sword, Zap } from 'lucide-react'
+import { Search, Dices, Loader2, AlertCircle, Mic2, ExternalLink, Trash2, ChevronRight, Headphones, X, Twitter, Facebook, Copy, Heart, Ghost, Lock, Sword, Zap, Clock, Brain } from 'lucide-react'
 import { useAuth } from './AuthContext'
 import AuthModal from './AuthModal';
 import SubscriptionManager from './components/SubscriptionManager'
