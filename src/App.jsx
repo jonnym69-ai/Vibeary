@@ -71,13 +71,6 @@ function App() {
     }
   }, [user])
 
-  const basicArchetypes = [
-    { id: 'epic', label: 'Epic', icon: '🏛️' },
-    { id: 'gritty', label: 'Gritty', icon: '🔥' },
-    { id: 'fast', label: 'Fast', icon: '⚡' },
-    { id: 'deep', label: 'Deep', icon: '🌊' },
-  ];
-
   const premiumArchetypes = [
     { id: 'epic', label: 'Epic', icon: <Sword size={16} />, description: 'Grand adventures and heroic journeys' },
     { id: 'gritty', label: 'Gritty', icon: <Zap size={16} />, description: 'Raw, intense stories with edge' },
