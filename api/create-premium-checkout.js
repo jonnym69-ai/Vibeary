@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       payment_method_types: ['card'],
       line_items: [
         {
-          price: 'price_1T1nMn5zp7Kd7fwD0zjn4Hrq', // Premium subscription price
+          price: 'price_1T34sQ5zp7Kd7fwDC84R7oLr', // Premium subscription price
           quantity: 1,
         },
       ],
